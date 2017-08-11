@@ -1,6 +1,4 @@
-﻿
-
--- Create the database schema if it doesn't exists
+﻿-- Create the database schema if it doesn't exists
 IF NOT EXISTS (SELECT [schema_id] FROM [sys].[schemas] WHERE [name] = '$(SCHEMA_NAME)')
 BEGIN
     EXEC (N'CREATE SCHEMA [$(SCHEMA_NAME)]');
