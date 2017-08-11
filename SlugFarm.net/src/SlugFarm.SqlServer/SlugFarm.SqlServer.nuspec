@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>SlugFarm.SqlServer</id>
+    <version>$version$</version>
+    <title>SlugFarm SQL Server Storage</title>
+    <authors>Alex Brown</authors>
+    <owners>Cohoda</owners>
+    <projectUrl>https://github.com/cohoda/SlugFarm</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>SQL Server storage for SlugFarm.</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>Slug, URL, SQL Server</tags>
+    <dependencies>
+      <dependency id="SlugFarm" />
+    </dependencies>
+  </metadata>
+</package>

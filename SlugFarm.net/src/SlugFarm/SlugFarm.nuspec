@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>SlugFarm</id>
+    <version>$version$</version>
+    <title>SlugFarm</title>
+    <authors>Alex Brown</authors>
+    <owners>Cohoda</owners>
+    <projectUrl>https://github.com/cohoda/SlugFarm</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Core components for SlugFarm, including in-memory storage of generated slugs.</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>Slug, URL</tags>
+  </metadata>
+</package>
