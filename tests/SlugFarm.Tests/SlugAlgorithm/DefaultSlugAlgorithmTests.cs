@@ -3,7 +3,7 @@ using FakeItEasy;
 using NUnit.Framework;
 using SlugFarm.SlugAlgorithm;
 
-namespace SlugFarm.Tests
+namespace SlugFarm.Tests.SlugAlgorithm
 {
     [TestFixture]
     public class DefaultSlugAlgorithmTests

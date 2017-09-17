@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\SlugFarm.SqlServer\SlugFarm.SqlServer.csproj">
-      <Project>{1B27EE0C-98B1-4FB2-8830-910AE9D5D69C}</Project>
+      <Project>{3B36C8B9-783E-442D-9E6F-7F77423FB8CB}</Project>
       <Name>SlugFarm.SqlServer</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\SlugFarm\SlugFarm.csproj">

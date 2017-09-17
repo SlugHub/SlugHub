@@ -7,8 +7,6 @@ namespace SlugFarm.Tests
 {
     public class SlugGenerator_UsingOptions_Tests
     {
-
-
         private ISlugStore _fakeSlugStore;
         private ISlugAlgorithm _fakeSlugAlgorithm;
 

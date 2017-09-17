@@ -1,9 +1,9 @@
-﻿using System;
+﻿using SlugFarm.SqlServer;
+using System;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
-using SlugFarm.SqlServer;
 
 namespace SlugFarm.ConsoleAppSample
 {
@@ -51,7 +51,7 @@ namespace SlugFarm.ConsoleAppSample
 
             var slugGenerator = new SlugGenerator(
                 new SlugGeneratorOptions { IterationSeedValue = 1000 },
-                new SqlServerSlugStore("DefaultConnection"));
+                new SqlServerSlugStore(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString));
 
             var stopwatch = Stopwatch.StartNew();
 

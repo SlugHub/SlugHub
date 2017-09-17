@@ -1,6 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Linq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SlugFarm.SlugStore;
 
 namespace SlugFarm.Tests.SlugStore
@@ -10,17 +8,10 @@ namespace SlugFarm.Tests.SlugStore
     {
         private InMemorySlugStore _inMemorySlugStore;
 
-        [OneTimeSetUp]
-        public void OneTimeSetUp()
-        {
-
-        }
-
         [SetUp]
         public void BeforeEachTest()
         {
             _inMemorySlugStore = new InMemorySlugStore();
-            InMemorySlugStore.Cache = new ConcurrentDictionary<string, Slug>();
         }
 
         [Test]
@@ -28,7 +19,7 @@ namespace SlugFarm.Tests.SlugStore
         {
             _inMemorySlugStore.Store(new Slug("Store_Adds_slug_value_to_collection"));
 
-            var result = InMemorySlugStore.Cache.ContainsKey("Store_Adds_slug_value_to_collection");
+            var result = _inMemorySlugStore.Exists("Store_Adds_slug_value_to_collection");
 
             Assert.That(result, Is.True);
         }
@@ -36,7 +27,7 @@ namespace SlugFarm.Tests.SlugStore
         [Test]
         public void Exists_Returns_true_if_slug_value_exists()
         {
-            InMemorySlugStore.Cache.TryAdd("Exists_Returns_true_if_slug_value_exists", new Slug("Exists_Returns_true_if_slug_value_exists"));
+            _inMemorySlugStore.Store(new Slug("Exists_Returns_true_if_slug_value_exists"));
 
             var result = _inMemorySlugStore.Exists("Exists_Returns_true_if_slug_value_exists");
 

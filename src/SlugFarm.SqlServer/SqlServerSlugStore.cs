@@ -1,8 +1,7 @@
-﻿using System;
-using System.Configuration;
-using System.Data.SqlClient;
-using Dapper;
+﻿using Dapper;
 using SlugFarm.SlugStore;
+using System;
+using System.Data.SqlClient;
 
 namespace SlugFarm.SqlServer
 {
@@ -15,41 +14,15 @@ namespace SlugFarm.SqlServer
             : this(nameOrConnectionString, new SqlServerSlugStoreOptions())
         { }
 
-        public SqlServerSlugStore(string nameOrConnectionString, SqlServerSlugStoreOptions options = null)
+        public SqlServerSlugStore(string connectionString, SqlServerSlugStoreOptions options = null)
         {
             if (options == null)
                 options = new SqlServerSlugStoreOptions();
 
             _options = options;
-
-            if (nameOrConnectionString == null) throw new ArgumentNullException("nameOrConnectionString");
-
-            if (IsConnectionString(nameOrConnectionString))
-            {
-                _connectionString = nameOrConnectionString;
-            }
-            else if (IsConnectionStringInConfiguration(nameOrConnectionString))
-            {
-                _connectionString = ConfigurationManager.ConnectionStrings[nameOrConnectionString].ConnectionString;
-            }
-            else
-            {
-                throw new ArgumentException($"Could not find connection string with name '{nameOrConnectionString}' in application config file");
-            }
+            _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
 
             Installer.InstallSqlTable(_connectionString, _options);
-        }
-
-        private bool IsConnectionString(string nameOrConnectionString)
-        {
-            return nameOrConnectionString.Contains(";");
-        }
-
-        private bool IsConnectionStringInConfiguration(string connectionStringName)
-        {
-            var connectionStringSetting = ConfigurationManager.ConnectionStrings[connectionStringName];
-
-            return connectionStringSetting != null;
         }
 
         public bool Exists(string slug)

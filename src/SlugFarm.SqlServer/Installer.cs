@@ -11,7 +11,7 @@ namespace SlugFarm.SqlServer
     {
         public static void InstallSqlTable(string connectionString, SqlServerSlugStoreOptions options)
         {
-            var script = GetStringResource(typeof(SqlServerSlugStore).Assembly, "SlugFarm.SqlServer.Install.sql");
+            var script = GetStringResource(typeof(SqlServerSlugStore).GetTypeInfo().Assembly, "SlugFarm.SqlServer.Install.sql");
 
             //do replaces
             script = script.Replace("$(SCHEMA_NAME)", options.TableSchema);
@@ -28,9 +28,10 @@ namespace SlugFarm.SqlServer
                     }
                     catch (SqlException ex)
                     {
-                        if (ex.ErrorCode == 1205)
+                        if (ex.Number == 1205)
                         {
-                            Trace.WriteLine("Deadlock occurred during automatic migration execution. Retrying...");
+                            //no trace in .net standard
+                            //Trace.WriteLine("Deadlock occurred during automatic migration execution. Retrying...");
                         }
                         else
                         {
@@ -47,10 +48,7 @@ namespace SlugFarm.SqlServer
             {
                 if (stream == null)
                 {
-                    throw new InvalidOperationException(String.Format(
-                        "Requested resource `{0}` was not found in the assembly `{1}`.",
-                        resourceName,
-                        assembly));
+                    throw new InvalidOperationException($"Requested resource `{resourceName}` was not found in the assembly `{assembly}`.");
                 }
 
                 using (var reader = new StreamReader(stream))
