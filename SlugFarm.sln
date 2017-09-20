@@ -16,8 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{1B94F46C-6
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SlugFarm.SqlServer", "src\SlugFarm.SqlServer\SlugFarm.SqlServer.csproj", "{3B36C8B9-783E-442D-9E6F-7F77423FB8CB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,10 +34,6 @@ Global
 		{5B9C78A0-4F25-450D-8E06-5153B00A00D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B9C78A0-4F25-450D-8E06-5153B00A00D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B9C78A0-4F25-450D-8E06-5153B00A00D5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3B36C8B9-783E-442D-9E6F-7F77423FB8CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B36C8B9-783E-442D-9E6F-7F77423FB8CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B36C8B9-783E-442D-9E6F-7F77423FB8CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B36C8B9-783E-442D-9E6F-7F77423FB8CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
