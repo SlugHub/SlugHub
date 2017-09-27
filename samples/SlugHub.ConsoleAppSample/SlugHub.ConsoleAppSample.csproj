@@ -7,8 +7,8 @@
     <ProjectGuid>{5B9C78A0-4F25-450D-8E06-5153B00A00D5}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SlugFarm.ConsoleAppSample</RootNamespace>
-    <AssemblyName>SlugFarm.ConsoleAppSample</AssemblyName>
+    <RootNamespace>SlugHub.ConsoleAppSample</RootNamespace>
+    <AssemblyName>SlugHub.ConsoleAppSample</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -46,13 +46,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\SlugFarm.SqlServer\SlugFarm.SqlServer.csproj">
+    <ProjectReference Include="..\..\src\SlugHub.SqlServer\SlugHub.SqlServer.csproj">
       <Project>{3B36C8B9-783E-442D-9E6F-7F77423FB8CB}</Project>
-      <Name>SlugFarm.SqlServer</Name>
+      <Name>SlugHub.SqlServer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\SlugFarm\SlugFarm.csproj">
+    <ProjectReference Include="..\..\src\SlugHub\SlugHub.csproj">
       <Project>{C2EFD471-BBD4-4E93-B59D-F6A4C50F8EF4}</Project>
-      <Name>SlugFarm</Name>
+      <Name>SlugHub</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

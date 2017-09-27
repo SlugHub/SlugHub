@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace SlugFarm.SlugStore
+namespace SlugHub.SlugStore
 {
     public class InMemorySlugStore : ISlugStore
     {

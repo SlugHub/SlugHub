@@ -1,9 +1,9 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
-using SlugFarm.SlugAlgorithm;
+using SlugHub.SlugAlgorithm;
 
-namespace SlugFarm.Tests.SlugAlgorithm
+namespace SlugHub.Tests.SlugAlgorithm
 {
     [TestFixture]
     public class SlugAlgorithmOptionsTests

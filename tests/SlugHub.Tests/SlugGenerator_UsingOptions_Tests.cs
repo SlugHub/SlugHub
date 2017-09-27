@@ -1,9 +1,9 @@
 using FakeItEasy;
 using NUnit.Framework;
-using SlugFarm.SlugAlgorithm;
-using SlugFarm.SlugStore;
+using SlugHub.SlugAlgorithm;
+using SlugHub.SlugStore;
 
-namespace SlugFarm.Tests
+namespace SlugHub.Tests
 {
     public class SlugGenerator_UsingOptions_Tests
     {

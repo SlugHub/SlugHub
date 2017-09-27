@@ -1,8 +1,8 @@
 using System.Linq;
-using SlugFarm.SlugAlgorithm;
-using SlugFarm.SlugStore;
+using SlugHub.SlugAlgorithm;
+using SlugHub.SlugStore;
 
-namespace SlugFarm
+namespace SlugHub
 {
     public class SlugGenerator : ISlugGenerator
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace SlugFarm.ConsoleAppSample
+namespace SlugHub.ConsoleAppSample
 {
     class Program
     {

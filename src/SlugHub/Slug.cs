@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SlugFarm
+namespace SlugHub
 {
     public class Slug
     {

@@ -1,3 +1,8 @@
-# SlugFarm #
-Slug generator, with persistent storage.  
-Backed by in memory store, or SQL Server.
+# SlugHub #
+## Highly configurable URL slug generator, with persistent storage ##
+
+SlugHub takes a string as an input, and converts it into URL friendly `slug`
+
+For example:
+
+git

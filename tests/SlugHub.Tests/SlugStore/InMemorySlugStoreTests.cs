@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using SlugFarm.SlugStore;
+using SlugHub.SlugStore;
 
-namespace SlugFarm.Tests.SlugStore
+namespace SlugHub.Tests.SlugStore
 {
     [TestFixture]
     public class InMemorySlugStoreTests

@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SlugFarm", "src\SlugFarm\SlugFarm.csproj", "{C2EFD471-BBD4-4E93-B59D-F6A4C50F8EF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SlugHub", "src\SlugHub\SlugHub.csproj", "{C2EFD471-BBD4-4E93-B59D-F6A4C50F8EF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlugFarm.Tests", "tests\SlugFarm.Tests\SlugFarm.Tests.csproj", "{8B17A327-07EB-48CD-8373-6B34FF248BC4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlugHub.Tests", "tests\SlugHub.Tests\SlugHub.Tests.csproj", "{8B17A327-07EB-48CD-8373-6B34FF248BC4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{036ABF11-F2C8-4CC7-9CB1-37947E9553C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlugFarm.ConsoleAppSample", "samples\SlugFarm.ConsoleAppSample\SlugFarm.ConsoleAppSample.csproj", "{5B9C78A0-4F25-450D-8E06-5153B00A00D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlugHub.ConsoleAppSample", "samples\SlugHub.ConsoleAppSample\SlugHub.ConsoleAppSample.csproj", "{5B9C78A0-4F25-450D-8E06-5153B00A00D5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{1B94F46C-65A3-4BC3-B910-66ED2AA1CFE2}"
 	ProjectSection(SolutionItems) = preProject

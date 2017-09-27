@@ -1,4 +1,4 @@
-namespace SlugFarm
+namespace SlugHub
 {
     public class SlugGeneratorOptions
     {

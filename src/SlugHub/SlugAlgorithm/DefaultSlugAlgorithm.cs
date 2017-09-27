@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace SlugFarm.SlugAlgorithm
+namespace SlugHub.SlugAlgorithm
 {
     public class DefaultSlugAlgorithm : ISlugAlgorithm
     {

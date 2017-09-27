@@ -1,4 +1,4 @@
-﻿namespace SlugFarm.SlugAlgorithm
+﻿namespace SlugHub.SlugAlgorithm
 {
     public interface ISlugAlgorithm
     {
