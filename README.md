@@ -5,4 +5,10 @@ SlugHub takes a string as an input, and converts it into URL friendly `slug`
 
 For example:
 
-git
+	var slugGenerator = new SlugGenerator();
+	var slug = slugGenerator.GenerateSlug("Some text that needs slugging ");
+	Console.WriteLine(slug);
+
+Outputs
+
+> some-text-that-needs-slugging
