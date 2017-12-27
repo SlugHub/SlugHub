@@ -13,7 +13,7 @@ Output:
 
 > some-text-that-needs-slugging
 
-###Generating unique slugs using iteration###
+### Generating unique slugs using iteration ###
 
 Calling `GenerateSlug(input)` with text that's already been slugged once (*and therefore stored in the `SlugStore` - more on that later*) will trigger an **iteration**.  
 
@@ -48,7 +48,7 @@ The output here would be
 >my-title-100
 
 
-###Generating unique slugs using "uniquifiers"###
+### Generating unique slugs using "uniquifiers" ###
 
 Uniquifiers are things that can create a unique version of your input.  
 Imagine you want to create slugged titles for pizza shops.  
@@ -66,7 +66,7 @@ In this example, the 2 slugs generated would be:
 This is because pizza-shop initially did not exist, so it didn't need a uniqueifier.  
 The second time it tried to generate pizza-shop, it existed, so used the uniqueifier.
 
-##Storage##
+## Storage ##
 
 The default implementation of `ISlugStore` is a simple `InMemorySlugStore`  
 Exactly as it sounds, this simply stores slugs in memory.  
