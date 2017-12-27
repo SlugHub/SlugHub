@@ -50,7 +50,7 @@
       <Project>{3B36C8B9-783E-442D-9E6F-7F77423FB8CB}</Project>
       <Name>SlugHub.SqlServer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\SlugHub\SlugHub.csproj">
+    <ProjectReference Include="..\..\src\SlugHub.csproj">
       <Project>{C2EFD471-BBD4-4E93-B59D-F6A4C50F8EF4}</Project>
       <Name>SlugHub</Name>
     </ProjectReference>
