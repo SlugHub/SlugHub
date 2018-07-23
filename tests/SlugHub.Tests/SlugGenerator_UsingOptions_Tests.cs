@@ -19,15 +19,17 @@ namespace SlugHub.Tests
         }
 
         [Test]
-        public void GenerateSlug_Appends_number_to_text_if_original_text_slugged_exists_Starting_at_supplied_seed_value()
+        [TestCase(null)]
+        [TestCase("group1")]
+        public void GenerateSlug_Appends_number_to_text_if_original_text_slugged_exists_Starting_at_supplied_seed_value(string groupingKey)
         {
             //Arrange
-            var slugGenerator = new SlugGenerator(new SlugGeneratorOptions { IterationSeedValue = 3 }, _fakeSlugStore,_fakeSlugAlgorithm); //start at 3
+            var slugGenerator = new SlugGenerator(new SlugGeneratorOptions { IterationSeedValue = 3 }, _fakeSlugStore, _fakeSlugAlgorithm); //start at 3
 
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text"))
                 .Returns("some-text");
 
-            A.CallTo(() => _fakeSlugStore.Exists("some-text"))
+            A.CallTo(() => _fakeSlugStore.Exists("some-text", groupingKey))
                 .Returns(true);
 
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text 3"))

@@ -12,35 +12,117 @@ namespace SlugHub.Tests.SlugStore
         public void BeforeEachTest()
         {
             _inMemorySlugStore = new InMemorySlugStore();
+            _inMemorySlugStore.Clear();
         }
 
-        [Test]
-        public void Store_Adds_slug_value_to_collection()
+        public class WithGroupingKey : InMemorySlugStoreTests
         {
-            _inMemorySlugStore.Store(new Slug("Store_Adds_slug_value_to_collection"));
+            [Test]
+            public void Store_Adds_slug_value_to_collection()
+            {
+                _inMemorySlugStore.Store(new Slug("Store_Adds_slug_value_to_collection", "group1"));
 
-            var result = _inMemorySlugStore.Exists("Store_Adds_slug_value_to_collection");
+                var result = _inMemorySlugStore.Exists("Store_Adds_slug_value_to_collection", "group1");
 
-            Assert.That(result, Is.True);
+                Assert.That(result, Is.True);
+            }
+
+            [Test]
+            public void Exists_Returns_true_if_slug_value_exists_in_same_group()
+            {
+                _inMemorySlugStore.Store(new Slug("Exists_Returns_true_if_slug_value_exists", "group1"));
+
+                var result = _inMemorySlugStore.Exists("Exists_Returns_true_if_slug_value_exists", "group1");
+
+                Assert.That(result, Is.True);
+            }
+
+            [Test]
+            public void Exists_Returns_false_if_slug_value_exists_but_in_different_group()
+            {
+                _inMemorySlugStore.Store(new Slug("Exists_Returns_true_if_slug_value_exists", "group1"));
+
+                var result = _inMemorySlugStore.Exists("Exists_Returns_true_if_slug_value_exists", "group2");
+
+                Assert.That(result, Is.False);
+            }
+
+            [Test]
+            public void Exists_Returns_false_if_slug_value_does_not_exist()
+            {
+                var result = _inMemorySlugStore.Exists("Exists_Returns_false_if_slug_value_does_not_exist", "group1");
+                Assert.That(result, Is.False);
+            }
+
+            [Test]
+            public void Exists_Returns_false_if_group_does_not_exist()
+            {
+                _inMemorySlugStore.Store(new Slug("Exists_Returns_true_if_slug_value_exists", "group1"));
+
+                var result = _inMemorySlugStore.Exists("Exists_Returns_true_if_slug_value_exists", "NOT_EXIST");
+
+                Assert.That(result, Is.False);
+            }
         }
 
-        [Test]
-        public void Exists_Returns_true_if_slug_value_exists()
+        public class WithNullGroupingKey : InMemorySlugStoreTests
         {
-            _inMemorySlugStore.Store(new Slug("Exists_Returns_true_if_slug_value_exists"));
+            [Test]
+            public void Store_Adds_slug_value_to_collection()
+            {
+                _inMemorySlugStore.Store(new Slug("Store_Adds_slug_value_to_collection", null));
 
-            var result = _inMemorySlugStore.Exists("Exists_Returns_true_if_slug_value_exists");
+                var result = _inMemorySlugStore.Exists("Store_Adds_slug_value_to_collection", null);
 
-            Assert.That(result, Is.True);
+                Assert.That(result, Is.True);
+            }
+
+            [Test]
+            public void Exists_Returns_true_if_slug_value_exists()
+            {
+                _inMemorySlugStore.Store(new Slug("Exists_Returns_true_if_slug_value_exists", null));
+
+                var result = _inMemorySlugStore.Exists("Exists_Returns_true_if_slug_value_exists", null);
+
+                Assert.That(result, Is.True);
+            }
+
+            [Test]
+            public void Exists_Returns_false_if_slug_value_does_not_exist()
+            {
+                var result = _inMemorySlugStore.Exists("Exists_Returns_false_if_slug_value_does_not_exist", null);
+                Assert.That(result, Is.False);
+            }
         }
 
-
-        [Test]
-        public void Exists_Returns_false_if_slug_value_does_not_exist()
+        public class WithStringEmptyGroupingKey : InMemorySlugStoreTests
         {
-            var result = _inMemorySlugStore.Exists("Exists_Returns_false_if_slug_value_does_not_exist");
+            [Test]
+            public void Store_Adds_slug_value_to_collection()
+            {
+                _inMemorySlugStore.Store(new Slug("Store_Adds_slug_value_to_collection", string.Empty));
 
-            Assert.That(result, Is.False);
+                var result = _inMemorySlugStore.Exists("Store_Adds_slug_value_to_collection", string.Empty);
+
+                Assert.That(result, Is.True);
+            }
+
+            [Test]
+            public void Exists_Returns_true_if_slug_value_exists()
+            {
+                _inMemorySlugStore.Store(new Slug("Exists_Returns_true_if_slug_value_exists", string.Empty));
+
+                var result = _inMemorySlugStore.Exists("Exists_Returns_true_if_slug_value_exists", string.Empty);
+
+                Assert.That(result, Is.True);
+            }
+
+            [Test]
+            public void Exists_Returns_false_if_slug_value_does_not_exist()
+            {
+                var result = _inMemorySlugStore.Exists("Exists_Returns_false_if_slug_value_does_not_exist", string.Empty);
+                Assert.That(result, Is.False);
+            }
         }
     }
 }

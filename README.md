@@ -13,6 +13,10 @@ Output:
 
 > some-text-that-needs-slugging
 
+#### Grouping Key ####
+The `Slug` object has an optional.0 `GroupingKey` property.  
+This can be used to differentiate between applications, accounts, domains, or anything. You could use this to deploy a multi-tenant service that serves slugs to all of your services.
+
 ### Generating unique slugs using iteration ###
 
 Calling `GenerateSlug(input)` with text that's already been slugged once (*and therefore stored in the `SlugStore` - more on that later*) will trigger an **iteration**.  
