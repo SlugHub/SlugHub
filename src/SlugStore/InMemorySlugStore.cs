@@ -1,4 +1,6 @@
 ﻿using System.Collections.Concurrent;
+using System.Threading.Tasks;
+
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("SlugHub.Tests")]
 
 namespace SlugHub.SlugStore
@@ -14,23 +16,26 @@ namespace SlugHub.SlugStore
             GroupedCache = new ConcurrentDictionary<string, ConcurrentDictionary<string, Slug>>();
 
             if (!GroupedCache.ContainsKey(DefaultCacheGroupingKey))
+            {
                 GroupedCache.TryAdd(DefaultCacheGroupingKey, new ConcurrentDictionary<string, Slug>());
+            }
         }
 
-        public bool Exists(string slug, string groupingKey)
+        public Task<bool> Exists(string slug, string groupingKey)
         {
             if (string.IsNullOrEmpty(groupingKey))
                 groupingKey = DefaultCacheGroupingKey;
 
             if (!GroupedCache.ContainsKey(groupingKey))
-                return false;
+                return Task.FromResult(false);
 
             var cache = GroupedCache[groupingKey];
+            var cacheContainsKey = cache.ContainsKey(slug);
 
-            return cache.ContainsKey(slug);
+            return Task.FromResult(cacheContainsKey);
         }
 
-        public void Store(Slug slug)
+        public Task Store(Slug slug)
         {
             var groupingKey = string.IsNullOrEmpty(slug.GroupingKey)
                 ? DefaultCacheGroupingKey
@@ -41,6 +46,8 @@ namespace SlugHub.SlugStore
 
             var cache = GroupedCache[groupingKey];
             cache.TryAdd(slug.Value, slug);
+
+            return Task.FromResult(0);
         }
 
         internal void Clear()

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Threading.Tasks;
 using FakeItEasy;
 using NUnit.Framework;
 using SlugHub.SlugAlgorithm;
@@ -24,9 +24,9 @@ namespace SlugHub.Tests
         }
 
         [Test]
-        public void GenerateSlug_Slugs_given_text_initially()
+        public async Task GenerateSlug_Slugs_given_text_initially()
         {
-            var result = _slugGenerator.GenerateSlug("Some text");
+            var result = await _slugGenerator.GenerateSlug("Some text");
 
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text"))
                 .MustHaveHappened();
@@ -35,12 +35,12 @@ namespace SlugHub.Tests
         [Test]
         [TestCase(null)]
         [TestCase("group1")]
-        public void GenerateSlug_Checks_SlugStore_for_existing_slug(string groupingKey)
+        public async Task GenerateSlug_Checks_SlugStore_for_existing_slug(string groupingKey)
         {
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text"))
                 .Returns("some-text");
 
-            var result = _slugGenerator.GenerateSlug("Some text", groupingKey);
+            var result = await _slugGenerator.GenerateSlug("Some text", groupingKey);
 
             A.CallTo(() => _fakeSlugStore.Exists("some-text", groupingKey))
             .MustHaveHappened();
@@ -49,7 +49,7 @@ namespace SlugHub.Tests
         [Test]
         [TestCase(null)]
         [TestCase("group1")]
-        public void GenerateSlug_Stores_slug_and_returns_if_it_does_not_already_exist(string groupKey)
+        public async Task GenerateSlug_Stores_slug_and_returns_if_it_does_not_already_exist(string groupKey)
         {
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text"))
                 .Returns("some-text");
@@ -57,7 +57,7 @@ namespace SlugHub.Tests
             A.CallTo(() => _fakeSlugStore.Exists("some-text", groupKey))
                 .Returns(false);
 
-            var result = _slugGenerator.GenerateSlug("Some text");
+            var result = await _slugGenerator.GenerateSlug("Some text");
 
             A.CallTo(() => _fakeSlugStore.Store(A<Slug>.That.Matches(x => x.Value == "some-text")))
                 .MustHaveHappened();
@@ -68,7 +68,7 @@ namespace SlugHub.Tests
         [Test]
         [TestCase(null)]
         [TestCase("group1")]
-        public void GenerateSlug_Adds_uniquifier_and_re_checks_existence_before_returning(string groupKey)
+        public async Task GenerateSlug_Adds_uniquifier_and_re_checks_existence_before_returning(string groupKey)
         {
             //first
             A.CallTo(() => _fakeSlugStore.Exists("some-text", groupKey))
@@ -84,7 +84,7 @@ namespace SlugHub.Tests
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text unique"))
                 .Returns("some-text-unique");
 
-            var result = _slugGenerator.GenerateSlug("Some text", new[] { "unique" });
+            var result = await _slugGenerator.GenerateSlug("Some text", new[] { "unique" });
 
             A.CallTo(() => _fakeSlugStore.Store(A<Slug>.That.Matches(x => x.Value == "some-text-unique")))
                 .MustHaveHappened();
@@ -95,7 +95,7 @@ namespace SlugHub.Tests
         [Test]
         [TestCase(null)]
         [TestCase("group1")]
-        public void GenerateSlug_Iterates_uniquifiers_if_first_one_appended_to_slug_still_exists(string groupKey)
+        public async Task GenerateSlug_Iterates_uniquifiers_if_first_one_appended_to_slug_still_exists(string groupKey)
         {
             //first
             A.CallTo(() => _fakeSlugStore.Exists("some-text", groupKey))
@@ -118,7 +118,7 @@ namespace SlugHub.Tests
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text uniquetwo"))
                 .Returns("some-text-uniquetwo");
 
-            var result = _slugGenerator.GenerateSlug("Some text", new[] { "uniqueone", "uniquetwo" });
+            var result = await _slugGenerator.GenerateSlug("Some text", new[] { "uniqueone", "uniquetwo" });
 
             A.CallTo(() => _fakeSlugStore.Store(A<Slug>.That.Matches(x => x.Value == "some-text-uniquetwo")))
                 .MustHaveHappened();
@@ -129,7 +129,7 @@ namespace SlugHub.Tests
         [Test]
         [TestCase(null)]
         [TestCase("group1")]
-        public void GenerateSlug_Appends_number_to_text_if_original_text_slugged_exists_without_supplying_uniquifiers(string groupKey)
+        public async Task GenerateSlug_Appends_number_to_text_if_original_text_slugged_exists_without_supplying_uniquifiers(string groupKey)
         {
             //first
             A.CallTo(() => _fakeSlugStore.Exists("some-text", groupKey))
@@ -152,7 +152,7 @@ namespace SlugHub.Tests
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text 2"))
                 .Returns("some-text-2");
 
-            var result = _slugGenerator.GenerateSlug("Some text");
+            var result = await _slugGenerator.GenerateSlug("Some text");
 
             A.CallTo(() => _fakeSlugStore.Store(A<Slug>.That.Matches(x => x.Value == "some-text-2")))
                 .MustHaveHappened();
@@ -163,7 +163,7 @@ namespace SlugHub.Tests
         [Test]
         [TestCase(null)]
         [TestCase("group1")]
-        public void GenerateSlug_Appends_number_to_text_and_uniquifier_if_slugged_exists(string groupKey)
+        public async Task GenerateSlug_Appends_number_to_text_and_uniquifier_if_slugged_exists(string groupKey)
         {
             //first
             A.CallTo(() => _fakeSlugStore.Exists("some-text", null))
@@ -200,7 +200,7 @@ namespace SlugHub.Tests
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text uniqueone 2"))
                 .Returns("some-text-uniqueone-2");
 
-            var result = _slugGenerator.GenerateSlug("Some text", new[] { "uniqueone", "uniquetwo" });
+            var result = await _slugGenerator.GenerateSlug("Some text", new[] { "uniqueone", "uniquetwo" });
 
             A.CallTo(() => _fakeSlugStore.Store(A<Slug>.That.Matches(x => x.Value == "some-text-uniqueone-2")))
                 .MustHaveHappened();

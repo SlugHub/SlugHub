@@ -1,9 +1,11 @@
-﻿namespace SlugHub.SlugStore
+﻿using System.Threading.Tasks;
+
+namespace SlugHub.SlugStore
 {
     public interface ISlugStore
     {
-        bool Exists(string slug, string groupingKey);
+        Task<bool> Exists(string slug, string groupingKey);
 
-        void Store(Slug slug);
+        Task Store(Slug slug);
     }
 }
