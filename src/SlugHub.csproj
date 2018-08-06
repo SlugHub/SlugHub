@@ -2,7 +2,6 @@
   <PropertyGroup>
     <TargetFrameworks>net45;netstandard1.1</TargetFrameworks>
       <PackageId>SlugHub</PackageId>
-      <PackageVersion>0.0.1</PackageVersion>
       <Authors>Cohoda LTD</Authors>
       <Description>Create unique, customisable slugs for text. Persist them to ensure uniqueness.</Description>
       <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
