@@ -4,8 +4,8 @@ namespace SlugHub.SlugStore
 {
     public interface ISlugStore
     {
-        Task<bool> Exists(string slug, string groupingKey);
+        Task<bool> ExistsAsync(string slug, string groupingKey);
 
-        Task Store(Slug slug);
+        Task StoreAsync(Slug slug);
     }
 }

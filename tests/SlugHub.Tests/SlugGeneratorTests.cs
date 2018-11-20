@@ -26,7 +26,7 @@ namespace SlugHub.Tests
         [Test]
         public async Task GenerateSlug_Slugs_given_text_initially()
         {
-            var result = await _slugGenerator.GenerateSlug("Some text");
+            var result = await _slugGenerator.GenerateSlugAsync("Some text");
 
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text"))
                 .MustHaveHappened();
@@ -40,9 +40,9 @@ namespace SlugHub.Tests
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text"))
                 .Returns("some-text");
 
-            var result = await _slugGenerator.GenerateSlug("Some text", groupingKey);
+            var result = await _slugGenerator.GenerateSlugAsync("Some text", groupingKey);
 
-            A.CallTo(() => _fakeSlugStore.Exists("some-text", groupingKey))
+            A.CallTo(() => _fakeSlugStore.ExistsAsync("some-text", groupingKey))
             .MustHaveHappened();
         }
 
@@ -54,12 +54,12 @@ namespace SlugHub.Tests
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text"))
                 .Returns("some-text");
 
-            A.CallTo(() => _fakeSlugStore.Exists("some-text", groupKey))
+            A.CallTo(() => _fakeSlugStore.ExistsAsync("some-text", groupKey))
                 .Returns(false);
 
-            var result = await _slugGenerator.GenerateSlug("Some text");
+            var result = await _slugGenerator.GenerateSlugAsync("Some text");
 
-            A.CallTo(() => _fakeSlugStore.Store(A<Slug>.That.Matches(x => x.Value == "some-text")))
+            A.CallTo(() => _fakeSlugStore.StoreAsync(A<Slug>.That.Matches(x => x.Value == "some-text")))
                 .MustHaveHappened();
 
             Assert.That(result, Is.EqualTo("some-text"));
@@ -71,22 +71,22 @@ namespace SlugHub.Tests
         public async Task GenerateSlug_Adds_uniquifier_and_re_checks_existence_before_returning(string groupKey)
         {
             //first
-            A.CallTo(() => _fakeSlugStore.Exists("some-text", groupKey))
+            A.CallTo(() => _fakeSlugStore.ExistsAsync("some-text", groupKey))
                 .Returns(true);
 
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text"))
                 .Returns("some-text");
 
             //second
-            A.CallTo(() => _fakeSlugStore.Exists("some-text-unique", groupKey))
+            A.CallTo(() => _fakeSlugStore.ExistsAsync("some-text-unique", groupKey))
                 .Returns(false);
 
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text unique"))
                 .Returns("some-text-unique");
 
-            var result = await _slugGenerator.GenerateSlug("Some text", new[] { "unique" });
+            var result = await _slugGenerator.GenerateSlugAsync("Some text", new[] { "unique" });
 
-            A.CallTo(() => _fakeSlugStore.Store(A<Slug>.That.Matches(x => x.Value == "some-text-unique")))
+            A.CallTo(() => _fakeSlugStore.StoreAsync(A<Slug>.That.Matches(x => x.Value == "some-text-unique")))
                 .MustHaveHappened();
 
             Assert.That(result, Is.EqualTo("some-text-unique"));
@@ -98,29 +98,29 @@ namespace SlugHub.Tests
         public async Task GenerateSlug_Iterates_uniquifiers_if_first_one_appended_to_slug_still_exists(string groupKey)
         {
             //first
-            A.CallTo(() => _fakeSlugStore.Exists("some-text", groupKey))
+            A.CallTo(() => _fakeSlugStore.ExistsAsync("some-text", groupKey))
                 .Returns(true);
 
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text"))
                 .Returns("some-text");
 
             //second
-            A.CallTo(() => _fakeSlugStore.Exists("some-text-uniqueone", groupKey))
+            A.CallTo(() => _fakeSlugStore.ExistsAsync("some-text-uniqueone", groupKey))
                 .Returns(true);
 
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text uniqueone"))
                 .Returns("some-text-uniqueone");
 
             //third
-            A.CallTo(() => _fakeSlugStore.Exists("some-text-uniquetwo", groupKey))
+            A.CallTo(() => _fakeSlugStore.ExistsAsync("some-text-uniquetwo", groupKey))
                 .Returns(false);
 
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text uniquetwo"))
                 .Returns("some-text-uniquetwo");
 
-            var result = await _slugGenerator.GenerateSlug("Some text", new[] { "uniqueone", "uniquetwo" });
+            var result = await _slugGenerator.GenerateSlugAsync("Some text", new[] { "uniqueone", "uniquetwo" });
 
-            A.CallTo(() => _fakeSlugStore.Store(A<Slug>.That.Matches(x => x.Value == "some-text-uniquetwo")))
+            A.CallTo(() => _fakeSlugStore.StoreAsync(A<Slug>.That.Matches(x => x.Value == "some-text-uniquetwo")))
                 .MustHaveHappened();
 
             Assert.That(result, Is.EqualTo("some-text-uniquetwo"));
@@ -132,29 +132,29 @@ namespace SlugHub.Tests
         public async Task GenerateSlug_Appends_number_to_text_if_original_text_slugged_exists_without_supplying_uniquifiers(string groupKey)
         {
             //first
-            A.CallTo(() => _fakeSlugStore.Exists("some-text", groupKey))
+            A.CallTo(() => _fakeSlugStore.ExistsAsync("some-text", groupKey))
                 .Returns(true);
 
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text"))
                 .Returns("some-text");
 
             //second
-            A.CallTo(() => _fakeSlugStore.Exists("some-text-1", groupKey))
+            A.CallTo(() => _fakeSlugStore.ExistsAsync("some-text-1", groupKey))
                 .Returns(true);
 
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text 1"))
                 .Returns("some-text-1");
 
             //third
-            A.CallTo(() => _fakeSlugStore.Exists("some-text-2", groupKey))
+            A.CallTo(() => _fakeSlugStore.ExistsAsync("some-text-2", groupKey))
                 .Returns(false);
 
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text 2"))
                 .Returns("some-text-2");
 
-            var result = await _slugGenerator.GenerateSlug("Some text");
+            var result = await _slugGenerator.GenerateSlugAsync("Some text");
 
-            A.CallTo(() => _fakeSlugStore.Store(A<Slug>.That.Matches(x => x.Value == "some-text-2")))
+            A.CallTo(() => _fakeSlugStore.StoreAsync(A<Slug>.That.Matches(x => x.Value == "some-text-2")))
                 .MustHaveHappened();
 
             Assert.That(result, Is.EqualTo("some-text-2"));
@@ -166,43 +166,43 @@ namespace SlugHub.Tests
         public async Task GenerateSlug_Appends_number_to_text_and_uniquifier_if_slugged_exists(string groupKey)
         {
             //first
-            A.CallTo(() => _fakeSlugStore.Exists("some-text", null))
+            A.CallTo(() => _fakeSlugStore.ExistsAsync("some-text", null))
                 .Returns(true);
 
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text"))
                 .Returns("some-text");
 
             //second
-            A.CallTo(() => _fakeSlugStore.Exists("some-text-uniqueone", groupKey))
+            A.CallTo(() => _fakeSlugStore.ExistsAsync("some-text-uniqueone", groupKey))
                 .Returns(true);
 
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text uniqueone"))
                 .Returns("some-text-uniqueone");
 
             //third
-            A.CallTo(() => _fakeSlugStore.Exists("some-text-uniquetwo", groupKey))
+            A.CallTo(() => _fakeSlugStore.ExistsAsync("some-text-uniquetwo", groupKey))
                 .Returns(true);
 
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text uniquetwo"))
                 .Returns("some-text-uniquetwo");
 
             //fourth
-            A.CallTo(() => _fakeSlugStore.Exists("some-text-uniqueone-1", groupKey))
+            A.CallTo(() => _fakeSlugStore.ExistsAsync("some-text-uniqueone-1", groupKey))
                 .Returns(true);
 
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text uniqueone 1"))
                 .Returns("some-text-uniqueone-1");
 
             //fifth
-            A.CallTo(() => _fakeSlugStore.Exists("some-text-uniqueone-2", groupKey))
+            A.CallTo(() => _fakeSlugStore.ExistsAsync("some-text-uniqueone-2", groupKey))
                 .Returns(false);
 
             A.CallTo(() => _fakeSlugAlgorithm.Slug("Some text uniqueone 2"))
                 .Returns("some-text-uniqueone-2");
 
-            var result = await _slugGenerator.GenerateSlug("Some text", new[] { "uniqueone", "uniquetwo" });
+            var result = await _slugGenerator.GenerateSlugAsync("Some text", new[] { "uniqueone", "uniquetwo" });
 
-            A.CallTo(() => _fakeSlugStore.Store(A<Slug>.That.Matches(x => x.Value == "some-text-uniqueone-2")))
+            A.CallTo(() => _fakeSlugStore.StoreAsync(A<Slug>.That.Matches(x => x.Value == "some-text-uniqueone-2")))
                 .MustHaveHappened();
 
             Assert.That(result, Is.EqualTo("some-text-uniqueone-2"));
