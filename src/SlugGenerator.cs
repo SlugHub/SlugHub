@@ -42,19 +42,19 @@ namespace SlugHub
             _slugGeneratorOptions = slugGeneratorOptions;
         }
 
-        public Task<string> GenerateSlug(string text, string[] uniquifiers = null)
+        public Task<string> GenerateSlugAsync(string text, string[] uniquifiers = null)
         {
-            return GenerateSlug(text, null, uniquifiers);
+            return GenerateSlugAsync(text, null, uniquifiers);
         }
 
-        public async Task<string> GenerateSlug(string text, string groupingKey, string[] uniquifiers = null)
+        public async Task<string> GenerateSlugAsync(string text, string groupingKey, string[] uniquifiers = null)
         {
             var initialSlug = _slugAlgorithm.Slug(text);
 
             //we might get lucky on first try
-            if (!await _slugStore.Exists(initialSlug, groupingKey))
+            if (!await _slugStore.ExistsAsync(initialSlug, groupingKey))
             {
-                await _slugStore.Store(new Slug(initialSlug, groupingKey));
+                await _slugStore.StoreAsync(new Slug(initialSlug, groupingKey));
                 return initialSlug;
             }
 
@@ -71,7 +71,7 @@ namespace SlugHub
 
                     slugWithUniquifier = _slugAlgorithm.Slug(text + " " + uniquifier);
 
-                    if (await _slugStore.Exists(slugWithUniquifier, groupingKey))
+                    if (await _slugStore.ExistsAsync(slugWithUniquifier, groupingKey))
                         slugWithUniquifier = null;
 
                     uniquifierIterationIndex++;
@@ -82,7 +82,7 @@ namespace SlugHub
                 if (string.IsNullOrEmpty(slugWithUniquifier))
                     return await GenerateAndStoreSlugWithIncrementedNumberAppendage(text + " " + uniquifiers.First(), groupingKey);
 
-                await _slugStore.Store(new Slug(slugWithUniquifier, groupingKey));
+                await _slugStore.StoreAsync(new Slug(slugWithUniquifier, groupingKey));
 
                 return slugWithUniquifier;
             }
@@ -105,13 +105,13 @@ namespace SlugHub
             {
                 slugWithNumber = _slugAlgorithm.Slug(text + " " + number);
 
-                if (await _slugStore.Exists(slugWithNumber, groupingKey))
+                if (await _slugStore.ExistsAsync(slugWithNumber, groupingKey))
                     slugWithNumber = null;
 
                 number++;
             }
 
-            await _slugStore.Store(new Slug(slugWithNumber, groupingKey));
+            await _slugStore.StoreAsync(new Slug(slugWithNumber, groupingKey));
 
             return slugWithNumber;
         }

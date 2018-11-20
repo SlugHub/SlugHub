@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard1.1</TargetFrameworks>
+    <TargetFrameworks>net46;netstandard1.3</TargetFrameworks>
       <PackageId>SlugHub</PackageId>
       <Authors>Cohoda LTD</Authors>
       <Description>Create unique, customisable slugs for text. Persist them to ensure uniqueness.</Description>
@@ -8,8 +8,14 @@
       <PackageReleaseNotes>First release</PackageReleaseNotes>
       <PackageTags>slug text-slug url-slug</PackageTags>
   </PropertyGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+    <PackageReference Include="System.Globalization.Extensions" Version="4.3.0" />
+  </ItemGroup>
+
 </Project>

@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace SlugHub.ConsoleAppSample
 {
     class Program
     {
-        static void Main()
+        public static async Task Main()
         {
             Console.WriteLine("This sample will create a slug for a piece of text, with 10000 iterations");
             Console.WriteLine("Press any key to continue");
@@ -20,25 +19,26 @@ namespace SlugHub.ConsoleAppSample
 
             var stopwatch = Stopwatch.StartNew();
 
-            var tasks = new List<Task>();
+            var slugTasks = new List<Task<string>>();
 
             for (var i = 1; i <= 10000; i++)
             {
-                var t = Task.Run(async () =>
-                {
-                    var slug = await slugGenerator.GenerateSlug("Some text that needs slugging " + i);
-                    Console.WriteLine(slug);
-                });
-
-                tasks.Add(t);
+                var task = slugGenerator.GenerateSlugAsync("Some text that needs slugging " + i);
+                slugTasks.Add(task);
             }
 
-            Task.WaitAll(tasks.ToArray(), CancellationToken.None);
-
+            var results = await Task.WhenAll(slugTasks);
             stopwatch.Stop();
 
+            var slugGenerationTime = stopwatch.Elapsed.Milliseconds;
+
+            foreach (var result in results)
+            {
+                Console.WriteLine(result);
+            }
+
             Console.WriteLine();
-            Console.WriteLine("Took " + stopwatch.ElapsedMilliseconds + "ms");
+            Console.WriteLine("Took " + slugGenerationTime + "ms to generate 10000 slugs");
             Console.WriteLine("");
             Console.WriteLine("Press enter to exit");
             Console.ReadLine();

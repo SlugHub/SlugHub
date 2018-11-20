@@ -21,7 +21,7 @@ namespace SlugHub.SlugStore
             }
         }
 
-        public Task<bool> Exists(string slug, string groupingKey)
+        public Task<bool> ExistsAsync(string slug, string groupingKey)
         {
             if (string.IsNullOrEmpty(groupingKey))
                 groupingKey = DefaultCacheGroupingKey;
@@ -35,7 +35,7 @@ namespace SlugHub.SlugStore
             return Task.FromResult(cacheContainsKey);
         }
 
-        public Task Store(Slug slug)
+        public Task StoreAsync(Slug slug)
         {
             var groupingKey = string.IsNullOrEmpty(slug.GroupingKey)
                 ? DefaultCacheGroupingKey
@@ -47,7 +47,7 @@ namespace SlugHub.SlugStore
             var cache = GroupedCache[groupingKey];
             cache.TryAdd(slug.Value, slug);
 
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         internal void Clear()

@@ -1,0 +1,43 @@
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps: 
+
+- task: GitVersion@5
+  inputs:
+    runtime: 'core'
+
+- task: DotNetCoreInstaller@0
+  displayName: 'Use .NET Core sdk 2.2.104' 
+  inputs: 
+    version: 2.2.104
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
+  inputs:
+    command: 'build'
+    arguments: '--configuration $(buildConfiguration) /p:Version=$(GitVersion.NuGetVersion)'
+    projects: 'src/SlugHub.csproj'
+    versioningScheme: byBuildNumber
+
+- task: DotNetCoreCLI@2
+  displayName: "dotnet pack"
+  inputs:
+    command: 'pack'
+    arguments: '--configuration $(buildConfiguration)'
+    packagesToPack: 'src/SlugHub.csproj'
+    nobuild: true
+    versioningScheme: byEnvVar 
+    versionEnvVar: GitVersion.NuGetVersion
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet push'
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: 'internalfeed'
+    versioningScheme: 'byBuildNumber'

@@ -1,4 +1,7 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Globalization;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SlugHub.SlugAlgorithm
 {
@@ -14,13 +17,7 @@ namespace SlugHub.SlugAlgorithm
                 str => str.ToLower(),
 
                 //remove diacritics
-                str =>
-                {
-                    var bytes = System.Text.Encoding.GetEncoding("ISO-8859-8")
-                        .GetBytes(str);
-
-                    return System.Text.Encoding.UTF8.GetString(bytes, 0, bytes.Length);
-                },
+                RemoveDiacritics,
 
                 // invalid chars           
                 str => Regex.Replace(str, @"[^a-z0-9\s-]", ""),
@@ -46,6 +43,23 @@ namespace SlugHub.SlugAlgorithm
                 result = manipulator(result);
 
             return result;
+        }
+
+        private static string RemoveDiacritics(string text)
+        {
+            var normalizedString = text.Normalize(NormalizationForm.FormD);
+            var stringBuilder = new StringBuilder();
+
+            foreach (var c in normalizedString)
+            {
+                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
     }
 }
