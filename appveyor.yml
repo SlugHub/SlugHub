@@ -1,65 +1,44 @@
 version: 1.0.{build}
+configuration: Release
+
+image: Visual Studio 2017
+
 pull_requests:
   do_not_increment_build_number: true
-skip_non_tags: true
-image: Visual Studio 2017
-configuration: Release
+
+skip_tags: true
+
+skip_commits:
+  files:
+    - '**/*.md'
+
+branches:
+  only:
+  - master
+  - /feature.*/
+
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
   version: '{version}'
   package_version: '{version}'
-  assembly_version: '{version}'
+  assembly_version: 1.0.0.0
   file_version: '{version}'
   informational_version: '{version}'
 
-build_script:  
-- ps: .\Build.ps1
+nuget:
+  project_feed: true
+  disable_publish_on_pr: true
+
+before_build:
+  - cmd: dotnet --info
+  - cmd: dotnet restore --verbosity Minimal
+
+build_script:
+  - cmd: dotnet build --configuration %CONFIGURATION%
+
+after_build:
+  - cmd: dotnet pack src\SlugHub.csproj --include-symbols --configuration %CONFIGURATION% --no-build --output ..\nupkgs /p:PackageVersion=%APPVEYOR_BUILD_VERSION%
 
 artifacts:
-- path: .\src\artifacts\*.nupkg
-  name: NuGet
-
-deploy:
-- provider: NuGet
-  api_key:
-    secure: /f9zserPJzsJ8FuS6VxDXFs9Xjacu3mJlCP1LpE60gkc9rqPr33mAz1BUGegXcTF
-  skip_symbols: true
-  on:
-    branch: master
-- provider: NuGet
-  name: production
-  skip_symbols: true
-  api_key:
-    secure: /f9zserPJzsJ8FuS6VxDXFs9Xjacu3mJlCP1LpE60gkc9rqPr33mAz1BUGegXcTF
-  on:
-    branch: /feature.*/
-
-
-
-# for:
-
-# # configuration for "master" branch
-# -
-#   branches:
-#     only:
-#       - master
-#   configuration: Release
-#   deploy:
-#   - provider: NuGet
-#     api_key:
-#       secure: /f9zserPJzsJ8FuS6VxDXFs9Xjacu3mJlCP1LpE60gkc9rqPr33mAz1BUGegXcTF
-#     artifact: /.*\.nupkg/
-
-# # configuration for all branches starting from "feature"
-# -
-#   branches:
-#     only:
-#       - /feature.*/
-#   configuration: Debug
-#   deploy:
-#   - provider: NuGet
-#     prerelease: true
-#     api_key:
-#       secure: /f9zserPJzsJ8FuS6VxDXFs9Xjacu3mJlCP1LpE60gkc9rqPr33mAz1BUGegXcTF
-#     artifact: /.*\.nupkg/
+  - path: nupkgs\*.nupkg
