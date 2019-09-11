@@ -20,7 +20,7 @@ steps:
   inputs:
     command: 'build'
     arguments: '--configuration $(buildConfiguration) /p:Version=$(GitVersion.NuGetVersion)'
-    projects: 'src/SlugHub.net.csproj'
+    projects: 'src/SlugHub.csproj'
     versioningScheme: byBuildNumber
 
 # The second task is dotnet pack command again pointing to the csproj file
@@ -30,7 +30,7 @@ steps:
   inputs:
     command: 'pack'
     arguments: '--configuration $(buildConfiguration)'
-    packagesToPack: 'src/SlugHub.net.csproj'
+    packagesToPack: 'src/SlugHub.csproj'
     nobuild: true
     versioningScheme: byEnvVar 
     versionEnvVar: GitVersion.NuGetVersion
