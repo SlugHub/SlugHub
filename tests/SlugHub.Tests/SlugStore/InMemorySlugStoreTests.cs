@@ -23,7 +23,7 @@ namespace SlugHub.Tests.SlugStore
             {
                 await _inMemorySlugStore.Store(new Slug("Store_Adds_slug_value_to_collection", "group1"));
 
-                var result = _inMemorySlugStore.Exists("Store_Adds_slug_value_to_collection", "group1");
+                var result = await _inMemorySlugStore.Exists("Store_Adds_slug_value_to_collection", "group1");
 
                 Assert.That(result, Is.True);
             }
@@ -33,7 +33,7 @@ namespace SlugHub.Tests.SlugStore
             {
                 await _inMemorySlugStore.Store(new Slug("Exists_Returns_true_if_slug_value_exists", "group1"));
 
-                var result = _inMemorySlugStore.Exists("Exists_Returns_true_if_slug_value_exists", "group1");
+                var result = await _inMemorySlugStore.Exists("Exists_Returns_true_if_slug_value_exists", "group1");
 
                 Assert.That(result, Is.True);
             }
@@ -43,7 +43,7 @@ namespace SlugHub.Tests.SlugStore
             {
                 await _inMemorySlugStore.Store(new Slug("Exists_Returns_true_if_slug_value_exists", "group1"));
 
-                var result = _inMemorySlugStore.Exists("Exists_Returns_true_if_slug_value_exists", "group2");
+                var result = await _inMemorySlugStore.Exists("Exists_Returns_true_if_slug_value_exists", "group2");
 
                 Assert.That(result, Is.False);
             }
@@ -60,7 +60,7 @@ namespace SlugHub.Tests.SlugStore
             {
                 await _inMemorySlugStore.Store(new Slug("Exists_Returns_true_if_slug_value_exists", "group1"));
 
-                var result = _inMemorySlugStore.Exists("Exists_Returns_true_if_slug_value_exists", "NOT_EXIST");
+                var result = await _inMemorySlugStore.Exists("Exists_Returns_true_if_slug_value_exists", "NOT_EXIST");
 
                 Assert.That(result, Is.False);
             }
@@ -73,7 +73,7 @@ namespace SlugHub.Tests.SlugStore
             {
                 await _inMemorySlugStore.Store(new Slug("Store_Adds_slug_value_to_collection", null));
 
-                var result = _inMemorySlugStore.Exists("Store_Adds_slug_value_to_collection", null);
+                var result = await _inMemorySlugStore.Exists("Store_Adds_slug_value_to_collection", null);
 
                 Assert.That(result, Is.True);
             }
@@ -83,7 +83,7 @@ namespace SlugHub.Tests.SlugStore
             {
                 await _inMemorySlugStore.Store(new Slug("Exists_Returns_true_if_slug_value_exists", null));
 
-                var result = _inMemorySlugStore.Exists("Exists_Returns_true_if_slug_value_exists", null);
+                var result = await _inMemorySlugStore.Exists("Exists_Returns_true_if_slug_value_exists", null);
 
                 Assert.That(result, Is.True);
             }
@@ -103,7 +103,7 @@ namespace SlugHub.Tests.SlugStore
             {
                 await _inMemorySlugStore.Store(new Slug("Store_Adds_slug_value_to_collection", string.Empty));
 
-                var result = _inMemorySlugStore.Exists("Store_Adds_slug_value_to_collection", string.Empty);
+                var result = await _inMemorySlugStore.Exists("Store_Adds_slug_value_to_collection", string.Empty);
 
                 Assert.That(result, Is.True);
             }
@@ -113,7 +113,7 @@ namespace SlugHub.Tests.SlugStore
             {
                 await _inMemorySlugStore.Store(new Slug("Exists_Returns_true_if_slug_value_exists", string.Empty));
 
-                var result = _inMemorySlugStore.Exists("Exists_Returns_true_if_slug_value_exists", string.Empty);
+                var result = await _inMemorySlugStore.Exists("Exists_Returns_true_if_slug_value_exists", string.Empty);
 
                 Assert.That(result, Is.True);
             }

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using FakeItEasy;
 using NUnit.Framework;
 using SlugHub.SlugAlgorithm;
@@ -21,7 +22,7 @@ namespace SlugHub.Tests
         [Test]
         [TestCase(null)]
         [TestCase("group1")]
-        public void GenerateSlug_Appends_number_to_text_if_original_text_slugged_exists_Starting_at_supplied_seed_value(string groupingKey)
+        public async Task GenerateSlug_Appends_number_to_text_if_original_text_slugged_exists_Starting_at_supplied_seed_value(string groupingKey)
         {
             //Arrange
             var slugGenerator = new SlugGenerator(new SlugGeneratorOptions { IterationSeedValue = 3 }, _fakeSlugStore, _fakeSlugAlgorithm); //start at 3
@@ -36,7 +37,7 @@ namespace SlugHub.Tests
                 .Returns("some-text-3");
 
             //Act
-            var result = slugGenerator.GenerateSlug("Some text");
+            var result = await slugGenerator.GenerateSlug("Some text");
 
             //Assert
             Assert.That(result, Is.EqualTo("some-text-3"));
