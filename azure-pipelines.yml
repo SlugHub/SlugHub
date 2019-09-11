@@ -1,19 +1,49 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+steps: 
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: GitVersion@5
+  inputs:
+    runtime: 'core'
+
+- task: DotNetCoreInstaller@0
+  displayName: 'Use .NET Core sdk 2.2.104' 
+  inputs: 
+    version: 2.2.104
+ 
+- task: DotNetCoreCLI@2 
+  displayName: 'dotnet restore from feed' 
+  inputs: 
+    command: restore 
+    projects: '$(Parameters.projects)' 
+    vstsFeed: '168c2416-9cd1-4e62-e89vb-5665da67a44c' 
+    includeNuGetOrg: false 
+    versioningScheme: byBuildNumber
+ 
+- task: DotNetCoreCLI@2 
+  displayName: 'dotnet build' 
+  inputs: 
+    projects: '$(Parameters.projects)' 
+    arguments: '--configuration $(BuildConfiguration) /p:Version=$(GitVersion.NuGetVersion)' 
+    versioningScheme: byBuildNumber
+ 
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet pack' 
+  inputs: 
+    command: pack
+    packagesToPack: '$(Parameters.projects)' 
+    nobuild: true 
+    versioningScheme: byEnvVar 
+    versionEnvVar: GitVersion.NuGetVersion
+ 
+- task: DotNetCoreCLI@2 
+  displayName: 'dotnet nuget push' 
+  inputs: 
+    command: push 
+    publishVstsFeed: '4f63f231-13e3-4e94-a560-1fe7067aecba'
+    nuGetFeedType: 'internal'
+    versioningScheme: byBuildNumber
