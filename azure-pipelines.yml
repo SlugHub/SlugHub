@@ -16,14 +16,11 @@ steps:
     version: 2.2.104
  
 - task: DotNetCoreCLI@2 
-  displayName: 'dotnet restore from feed' 
+  displayName: 'dotnet restore' 
   inputs: 
     command: restore 
     projects: '$(Parameters.projects)' 
-    vstsFeed: '168c2416-9cd1-4e62-e89vb-5665da67a44c' 
-    includeNuGetOrg: false 
-    versioningScheme: byBuildNumber
- 
+
 - task: DotNetCoreCLI@2 
   displayName: 'dotnet build' 
   inputs: 
