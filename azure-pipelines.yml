@@ -1,0 +1,49 @@
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps: 
+
+- task: GitVersion@5
+  inputs:
+    runtime: 'core'
+
+- task: DotNetCoreInstaller@0
+  displayName: 'Use .NET Core sdk 2.2.104' 
+  inputs: 
+    version: 2.2.104
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
+  inputs:
+    command: 'build'
+    arguments: '--configuration $(buildConfiguration) /p:Version=$(GitVersion.NuGetVersion)'
+    projects: 'src/SlugHub.csproj'
+    versioningScheme: byBuildNumber
+
+# The second task is dotnet pack command again pointing to the csproj file
+# The nobuild means the project will not be compiled before running pack, because its already built in above step
+- task: DotNetCoreCLI@2
+  displayName: "dotnet pack"
+  inputs:
+    command: 'pack'
+    arguments: '--configuration $(buildConfiguration)'
+    packagesToPack: 'src/SlugHub.csproj'
+    nobuild: true
+    versioningScheme: byEnvVar 
+    versionEnvVar: GitVersion.NuGetVersion
+
+# The last task is a nuget command, nuget push
+# This will push any .nupkg files to the 'internalfeed' artifact feed
+# allowPackageConflicts allows us to build the same version and not throw an error when trying to push
+# instead it just ingores the latest package unless the version changes
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet push'
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: 'internalfeed'
+    versioningScheme: 'byBuildNumber'
