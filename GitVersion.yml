@@ -1,34 +1,9 @@
-mode: ContinuousDelivery
+mode: Mainline
+next-version: 3.0.0
 branches:
-  release:
-    regex: releases?[/-]
-    mode: ContinuousDelivery
-    tag: beta
-    increment: Patch
-    prevent-increment-of-merged-branch-version: true
-    track-merge-target: false
-    tracks-release-branches: false
-    is-release-branch: true
-
-  master:
-    regex: master
-    mode: ContinuousDelivery
-    tag: ''
-    increment: Patch
-    prevent-increment-of-merged-branch-version: true
-    track-merge-target: false
-    tracks-release-branches: false
-    is-release-branch: false
-
   feature:
-      regex: features?[/-]
-      mode: ContinuousDelivery
       tag: useBranchName
-      increment: Inherit
-      prevent-increment-of-merged-branch-version: false
-      track-merge-target: false
-      tracks-release-branches: false
-      is-release-branch: false
+  master:
+    tag: ''
 ignore:
   sha: []
-merge-message-formats: {}
