@@ -1,44 +1,22 @@
-version: 2.0.{build}
-configuration: Release
-
-image: Visual Studio 2017
-
-pull_requests:
-  do_not_increment_build_number: true
-
 skip_tags: true
+image: Visual Studio 2019
 
-skip_commits:
-  files:
-    - '**/*.md'
-
-branches:
-  only:
-  - master
-  - /feature.*/
-
-dotnet_csproj:
-  patch: true
-  file: '**\*.csproj'
-  version: '{version}'
-  package_version: '{version}'
-  assembly_version: 2.0.0.0
-  file_version: '{version}'
-  informational_version: '{version}'
-
-nuget:
-  project_feed: true
-  disable_publish_on_pr: true
+install:
+  - cmd: choco install gitversion.portable -pre -y
 
 before_build:
-  - cmd: dotnet --info
-  - cmd: dotnet restore --verbosity Minimal
+  - ps: gitversion /l console /output buildserver
+
+build:
+  verbosity: detailed
 
 build_script:
-  - cmd: dotnet build --configuration %CONFIGURATION%
+- cmd: dotnet restore ./SlugHub.sln --disable-parallel
+- cmd: dotnet build ./SlugHub.sln -c Release --disable-parallel
+- cmd: dotnet pack ./SlugHub.sln -c Release --output %APPVEYOR_BUILD_FOLDER%/artifacts/
 
-after_build:
-  - cmd: dotnet pack src\SlugHub.csproj --include-symbols --configuration %CONFIGURATION% --no-build --output ..\nupkgs /p:PackageVersion=%APPVEYOR_BUILD_VERSION%
+test_script:
+- cmd: dotnet test ./tests/SlugHub.Tests/SlugHub.Tests.csproj
 
 artifacts:
-  - path: nupkgs\*.nupkg
+- path: artifacts/*
