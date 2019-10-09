@@ -3,6 +3,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  solution: '**/*.sln'
 
 steps: 
 
@@ -23,6 +24,15 @@ steps:
     projects: 'src/SlugHub.csproj'
     versioningScheme: byBuildNumber
 
+# Run tests and create coverage report
+- task: DotNetCoreCLI@2
+  displayName: Test
+  inputs:
+    command: test
+#    projects: '$(Parameters.TestProjects)'
+    projects: '**/*[Tt]ests/*.csproj'
+    arguments: '--configuration $(BuildConfiguration) --no-build /p:AltCover=true /p:AltCoverForce=true /p:AltCoverCallContext=[Fact] /p:AltCoverXmlReport=..\target\reports\coverage\coverage.opencover.xml --collect "Code Coverage"'
+
 - task: DotNetCoreCLI@2
   displayName: "dotnet pack"
   inputs:
@@ -32,3 +42,19 @@ steps:
     nobuild: true
     versioningScheme: byEnvVar 
     versionEnvVar: GitVersion.NuGetVersion
+
+- task: CopyFiles@2
+  displayName: 'Copy *.nupkg Files'
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: '**\*.nupkg'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)\Package'
+    flattenFolders: true
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+
+# Publish
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\Package'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
