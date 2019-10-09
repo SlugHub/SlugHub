@@ -41,13 +41,3 @@ steps:
     nuGetFeedType: 'internal'
     publishVstsFeed: 'SlugHub'
     versioningScheme: 'byBuildNumber'
-
-- task: GitHubRelease@0
-  condition: eq(variables['Build.SourceBranch'], 'master')   
-  inputs:
-    gitHubConnection: 'SlugHub'
-    repositoryName: '$(Build.Repository.Name)'
-    action: 'create'
-    target: '$(Build.SourceVersion)'
-    tagSource: 'auto'
-    compareWith: 'lastFullRelease'
