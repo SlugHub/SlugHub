@@ -6,7 +6,7 @@ SlugHub takes a string as an input, and converts it into URL friendly `slug`
 For example:
 
 	var slugGenerator = new SlugGenerator();
-	var slug = slugGenerator.GenerateSlug("Some text that needs slugging");
+	var slug = await slugGenerator.GenerateSlugAsync("Some text that needs slugging");
 	Console.WriteLine(slug);
 
 Output:
@@ -19,12 +19,12 @@ This can be used to differentiate between applications, accounts, domains, or an
 
 ### Generating unique slugs using iteration ###
 
-Calling `GenerateSlug(input)` with text that's already been slugged once (*and therefore stored in the `SlugStore` - more on that later*) will trigger an **iteration**.  
+Calling `GenerateSlugAsync(input)` with text that's already been slugged once (*and therefore stored in the `SlugStore` - more on that later*) will trigger an **iteration**.  
 
 Let's see an example:
 
-	var slug1 = slugGenerator.GenerateSlug("My Title");
-	var slug2 = slugGenerator.GenerateSlug("My Title");
+	var slug1 = await slugGenerator.GenerateSlugAsync("My Title");
+	var slug2 = await slugGenerator.GenerateSlugAsync("My Title");
 	
 	Console.WriteLine(slug1);
 	Console.WriteLine(slug2);
@@ -40,8 +40,8 @@ The iteration seed can be configured using `SlugGeneratorOptions` when creating 
 	var options = new SlugGeneratorOptions { IterationSeedValue = 100 };
 	var slugGenerator = new SlugGenerator(options);
 
-	var slug1 = slugGenerator.GenerateSlug("My Title");
-	var slug2 = slugGenerator.GenerateSlug("My Title");
+	var slug1 = await slugGenerator.GenerateSlugAsync("My Title");
+	var slug2 = await slugGenerator.GenerateSlugAsync("My Title");
 	
 	Console.WriteLine(slug1);
 	Console.WriteLine(slug2);
@@ -59,8 +59,8 @@ Imagine you want to create slugged titles for pizza shops.
 Now let's assume one is in London, one is in Leeds.
 We can pass London and Leeds in as optional uniqueifier parameters, which will then be included, if the original slug is already taken:
 
-	var slug1 = slugGenerator.GenerateSlug("Pizza Shop", "London");
-	var slug2 = slugGenerator.GenerateSlug("Pizza Shop", "Leeds");
+	var slug1 = await slugGenerator.GenerateSlugAsync("Pizza Shop", "London");
+	var slug2 = await slugGenerator.GenerateSlugAsync("Pizza Shop", "Leeds");
 	
 In this example, the 2 slugs generated would be:
 
@@ -80,6 +80,6 @@ If you want something more persistable, simply create one, implementing the ligh
 
     public interface ISlugStore
     {
-        bool Exists(string slug);
-        void Store(Slug slug);
+        Task<bool> ExistsAsync(string slug);
+        Task StoreAsync (Slug slug);
     }

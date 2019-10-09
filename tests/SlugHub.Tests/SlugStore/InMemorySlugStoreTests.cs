@@ -21,6 +21,8 @@ namespace SlugHub.Tests.SlugStore
             [Test]
             public async Task Store_Adds_slug_value_to_collection()
             {
+                await _inMemorySlugStore.StoreAsync(new Slug("Store_Adds_slug_value_to_collection", "group1"));
+
                 var result = await _inMemorySlugStore.ExistsAsync("Store_Adds_slug_value_to_collection", "group1");
 
                 Assert.That(result, Is.True);
@@ -29,6 +31,8 @@ namespace SlugHub.Tests.SlugStore
             [Test]
             public async Task Exists_Returns_true_if_slug_value_exists_in_same_group()
             {
+                await _inMemorySlugStore.StoreAsync(new Slug("Exists_Returns_true_if_slug_value_exists", "group1"));
+
                 var result = await _inMemorySlugStore.ExistsAsync("Exists_Returns_true_if_slug_value_exists", "group1");
 
                 Assert.That(result, Is.True);
@@ -37,6 +41,8 @@ namespace SlugHub.Tests.SlugStore
             [Test]
             public async Task Exists_Returns_false_if_slug_value_exists_but_in_different_group()
             {
+                await _inMemorySlugStore.StoreAsync(new Slug("Exists_Returns_true_if_slug_value_exists", "group1"));
+
                 var result = await _inMemorySlugStore.ExistsAsync("Exists_Returns_true_if_slug_value_exists", "group2");
 
                 Assert.That(result, Is.False);
@@ -52,6 +58,8 @@ namespace SlugHub.Tests.SlugStore
             [Test]
             public async Task Exists_Returns_false_if_group_does_not_exist()
             {
+                await _inMemorySlugStore.StoreAsync(new Slug("Exists_Returns_true_if_slug_value_exists", "group1"));
+
                 var result = await _inMemorySlugStore.ExistsAsync("Exists_Returns_true_if_slug_value_exists", "NOT_EXIST");
 
                 Assert.That(result, Is.False);
@@ -63,6 +71,8 @@ namespace SlugHub.Tests.SlugStore
             [Test]
             public async Task Store_Adds_slug_value_to_collection()
             {
+                await _inMemorySlugStore.StoreAsync(new Slug("Store_Adds_slug_value_to_collection", null));
+
                 var result = await _inMemorySlugStore.ExistsAsync("Store_Adds_slug_value_to_collection", null);
 
                 Assert.That(result, Is.True);
@@ -71,6 +81,8 @@ namespace SlugHub.Tests.SlugStore
             [Test]
             public async Task Exists_Returns_true_if_slug_value_exists()
             {
+                await _inMemorySlugStore.StoreAsync(new Slug("Exists_Returns_true_if_slug_value_exists", null));
+
                 var result = await _inMemorySlugStore.ExistsAsync("Exists_Returns_true_if_slug_value_exists", null);
 
                 Assert.That(result, Is.True);
@@ -89,6 +101,8 @@ namespace SlugHub.Tests.SlugStore
             [Test]
             public async Task Store_Adds_slug_value_to_collection()
             {
+                await _inMemorySlugStore.StoreAsync(new Slug("Store_Adds_slug_value_to_collection", string.Empty));
+
                 var result = await _inMemorySlugStore.ExistsAsync("Store_Adds_slug_value_to_collection", string.Empty);
 
                 Assert.That(result, Is.True);
@@ -97,6 +111,8 @@ namespace SlugHub.Tests.SlugStore
             [Test]
             public async Task Exists_Returns_true_if_slug_value_exists()
             {
+                await _inMemorySlugStore.StoreAsync(new Slug("Exists_Returns_true_if_slug_value_exists", string.Empty));
+
                 var result = await _inMemorySlugStore.ExistsAsync("Exists_Returns_true_if_slug_value_exists", string.Empty);
 
                 Assert.That(result, Is.True);

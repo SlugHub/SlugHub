@@ -23,8 +23,8 @@ namespace SlugHub.ConsoleAppSample
 
             for (var i = 1; i <= 10000; i++)
             {
-                var t = slugGenerator.GenerateSlugAsync("Some text that needs slugging " + i);
-                slugTasks.Add(t);
+                var task = slugGenerator.GenerateSlugAsync("Some text that needs slugging " + i);
+                slugTasks.Add(task);
             }
 
             var results = await Task.WhenAll(slugTasks);
