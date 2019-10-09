@@ -32,12 +32,3 @@ steps:
     nobuild: true
     versioningScheme: byEnvVar 
     versionEnvVar: GitVersion.NuGetVersion
-
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet push'
-  inputs:
-    command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-    nuGetFeedType: 'internal'
-    publishVstsFeed: 'SlugHub'
-    versioningScheme: 'byBuildNumber'
